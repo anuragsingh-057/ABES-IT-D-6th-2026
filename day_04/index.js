@@ -1,23 +1,25 @@
-
 import { readFile, writeFile } from "./readAndWrite.js";
 
-const addStudent = async (path, name) => {
-    const students = await readFile(path);
-    const studentArray = Array.isArray(students) ? students : [];
-    const maxId = studentArray.length > 0
-        ? Math.max(...studentArray.map(s => s.id))
-        : 0;
-
-    const newStudent = {
-        id: maxId + 1,
-        name: name
+const fileData = async (path) => {
+    try {
+        const data = await readFile(path);
+        console.log(data);
+    } catch (error) {
+        console.log("service is not working...");
+    }
+}
+// fileData("./students.json");
+// writeData("./students.json",`{id:4,name:"D"}`);
+const writeData = async (path, data) => {
+    const fileData = await readFile(path);
+    let updatedData = [];
+    if (!fileData) {
+        updatedData = [{id:1,...data}]
+    } else {
+        let oldData = JSON.parse(fileData);
+        updatedData = [...oldData, {id:oldData.length +1 ,...data}]
     };
-
-    studentArray.push(newStudent);
-
-    await writeFile(path, studentArray);
-
-    console.log("Student Added:", newStudent);
-};
-
-await addStudent("./studdents.json", "E");
+    const response = await writeFile(path, JSON.stringify(updatedData));
+    console.log(response.status);
+}
+writeData("./students.json", {name: "B" });
