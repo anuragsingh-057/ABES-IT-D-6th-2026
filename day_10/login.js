@@ -10,3 +10,6 @@ export const userLogin = async (data, FILE) => {
         ? { message: "Login Successfull" }
         : { message: "Incorrect Password" }
 }
+
+// userLogin({ email: "cclimpson0@auda.org.au", password: "aL8)5(gt5Tc5W@_" }, "./users.json")
+//     .then((res) => console.log(res))
